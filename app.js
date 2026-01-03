@@ -90,6 +90,37 @@ const el = {
   forest: document.getElementById("forest"),
 };
 
+// --- Notifications + alert helpers ---
+async function ensureNotificationPermission() {
+  if (!("Notification" in window)) return false;
+
+  if (Notification.permission === "granted") return true;
+  if (Notification.permission === "denied") return false;
+
+  const permission = await Notification.requestPermission();
+  return permission === "granted";
+}
+
+function notifyFocusFinished(minutes) {
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification("Focus session complete ✅", {
+      body: `Nice work — ${minutes} minutes logged.`,
+      silent: false,
+    });
+  }
+
+  try {
+    const audio = new Audio(
+      "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
+    );
+    audio.play();
+  } catch (e) {}
+
+  const originalTitle = document.title;
+  document.title = "✅ Focus complete!";
+  setTimeout(() => (document.title = originalTitle), 5000);
+}
+
 function fmtMMSS(totalSeconds) {
   const m = Math.floor(totalSeconds / 60);
   const s = totalSeconds % 60;
@@ -188,6 +219,8 @@ function completeSession() {
     minutes: Math.max(1, mins),
   });
   saveState(state);
+
+  notifyFocusFinished(Math.max(1, mins));
 
   // stop timer
   running = false;
@@ -299,7 +332,10 @@ function render() {
 }
 
 // ========= 6) EVENTS =========
-el.startBtn.addEventListener("click", startTimer);
+el.startBtn.addEventListener("click", async () => {
+  await ensureNotificationPermission();
+  startTimer();
+});
 el.pauseBtn.addEventListener("click", pauseResume);
 el.stopBtn.addEventListener("click", stopTimer);
 el.submitBtn.addEventListener("click", () => submitToday({ note: "Manual submit" }));
