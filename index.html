@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Focus Forest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🌲 Focus Forest</h1>
+    <p class="sub">A tiny Forest-style focus timer that logs your daily progress to a Google Form.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="row">
+        <div class="timer">
+          <div id="timeDisplay" class="time">25:00</div>
+          <div id="status" class="status">Ready</div>
+        </div>
+
+        <div class="controls">
+          <label class="field">
+            <span>Focus length (minutes)</span>
+            <input id="minutesInput" type="number" min="1" max="240" value="25" />
+          </label>
+
+          <div class="btnRow">
+            <button id="startBtn" class="primary">Start</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="stopBtn" disabled>Stop</button>
+          </div>
+
+          <label class="check">
+            <input id="autoSubmit" type="checkbox" />
+            <span>Auto-submit each completed session to Google Form</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="card">
+        <h2>Today</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="label">Date</div>
+            <div id="todayDate" class="value">—</div>
+          </div>
+          <div class="stat">
+            <div class="label">Focused</div>
+            <div id="todayFocused" class="value">0 min</div>
+          </div>
+          <div class="stat">
+            <div class="label">Sessions</div>
+            <div id="todaySessions" class="value">0</div>
+          </div>
+        </div>
+
+        <div class="btnRow">
+          <button id="submitBtn" class="primary">Submit today to Google Form</button>
+          <button id="resetBtn" class="danger">Reset today</button>
+        </div>
+
+        <details class="hint">
+          <summary>Google Form settings</summary>
+          <p>Open <code>app.js</code> and paste your Google Form <strong>formResponse URL</strong> and each field's <strong>entry ID</strong>.</p>
+          <p>This works best when the form accepts responses from anyone (no sign-in restriction).</p>
+        </details>
+      </section>
+
+      <section class="card">
+        <h2>Your Forest</h2>
+        <p class="sub small">Each completed session plants one tree.</p>
+        <div id="forest" class="forest" aria-label="Forest"></div>
+      </section>
+
+      <section class="card">
+        <h2>Sessions</h2>
+        <ol id="sessionList" class="sessions"></ol>
+      </section>
+    </section>
+
+    <section class="card">
+      <h2>Setup checklist</h2>
+      <ol class="checklist">
+        <li>Create a Google Form and add fields: <em>Date</em>, <em>Focused minutes</em>, <em>Sessions</em> (optional: notes).</li>
+        <li>Get each question's <code>entry.XXXX</code> ID from a pre-filled link (instructions in README).</li>
+        <li>Paste your form URL + entry IDs into <code>app.js</code>.</li>
+        <li>Push to GitHub and enable GitHub Pages.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p class="sub small">Made for GitHub Pages • Static HTML/CSS/JS • No backend</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
